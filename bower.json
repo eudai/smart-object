@@ -1,0 +1,23 @@
+{
+  "name": "smart-object",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Christopher Russ"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "page": "visionmedia/page.js#~1.6.4",
+    "jquery": "~2.2.0",
+    "uikit": "~2.24.3"
+  }
+}
