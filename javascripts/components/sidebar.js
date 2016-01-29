@@ -1,25 +1,32 @@
 var Sidebar = function(array){
 
-    var initialize = function(array){
+    this.initialize = function(array){
         
-        var offCanvas = makeOffCanvas()
+        var sidebar = makeSidebar()
+        var id = _.uniqueId('sidebar')
+        sidebar.id = id
         
         var offCanvasBar = makeOffCanvasBar()
-        offCanvas.appendChild(offCanvasBar)
+        sidebar.appendChild(offCanvasBar)
 
         var list = makeList(array)
         offCanvasBar.appendChild(list)
 
-        var button = makeButton()
-
-        return {
-            data: array,
-            element: offCanvas,
-            button: button
-        }
+        this.id = id
+        this.data = array
+        this.element = sidebar
     }
 
-    var makeOffCanvas = function(element){
+    this.makeButton = function(){
+        var button = document.createElement('a')
+        button.className = "uk-navbar-content uk-navbar-toggle"
+        button.setAttribute("data-uk-offcanvas","{target:'#" + this.id + "'}")
+        this.buttons = this.togglers || []
+        this.buttons.push(button)
+        return button
+    }
+
+    var makeSidebar = function(element){
         var offCanvas = document.createElement('div')
         offCanvas.className = "uk-offcanvas"
         return offCanvas
@@ -33,11 +40,15 @@ var Sidebar = function(array){
 
     var makeList = function(array){
         var list = document.createElement('ul')
-        list.className = "uk-nav uk-nav-parent uk-nav-offcanvas"
+        list.className = "uk-nav uk-nav-offcanvas"
         for ( var i in array ){
             var settings = array[i]
             var item = makeItem(settings)
             list.appendChild(item)
+        }
+        if ( list.querySelector('.uk-nav-sub') ){
+            list.setAttribute('data-uk-nav','')
+            $(list).addClass('uk-nav-parent-icon')
         }
         return list
     }
@@ -62,19 +73,18 @@ var Sidebar = function(array){
             span.textContent = "\u00A0\u00A0" + options.title
             a.appendChild(span)
         }
+
+        if ( options.subnavs ){
+            li.className = 'uk-parent'
+            var sublist = makeList(options.subnavs)
+            sublist.className = 'uk-nav-sub'
+            a.href= "#"
+            li.appendChild(sublist)
+        }
+
         return li
     }
 
-    var makeButton = function(target){
-        var button = document.createElement('a')
-        button.className = "uk-navbar-content uk-navbar-toggle"
-        button.setAttribute("data-uk-offcanvas","{target:'#" + target + "'}")
-        return button
-    }
-
-    var sidebar = initialize(array)
-    this.data = sidebar.data
-    this.element = sidebar.element 
-    this.makeButton = makeButton 
+    this.initialize(array) 
      
 }
